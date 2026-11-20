@@ -1,0 +1,65 @@
+{
+  "account_id": "111122223333",
+  "users": [
+    {
+      "name": "alice",
+      "policies": [
+        {"effect": "Allow",
+         "actions": ["iam:PassRole", "lambda:CreateFunction", "lambda:InvokeFunction"],
+         "resources": ["*"]},
+        {"effect": "Allow",
+         "actions": ["sts:AssumeRole"],
+         "resources": ["arn:aws:iam::111122223333:role/dev-role"]}
+      ]
+    },
+    {
+      "name": "bob",
+      "policies": [
+        {"effect": "Allow",
+         "actions": ["iam:CreatePolicyVersion"],
+         "resources": ["*"]},
+        {"effect": "Allow",
+         "actions": ["s3:GetObject", "s3:ListBucket"],
+         "resources": ["*"]}
+      ]
+    },
+    {
+      "name": "carol",
+      "policies": [
+        {"effect": "Allow", "actions": ["*"], "resources": ["*"]}
+      ]
+    },
+    {
+      "name": "dave",
+      "policies": [
+        {"effect": "Allow",
+         "actions": ["s3:GetObject", "s3:ListBucket"],
+         "resources": ["*"]}
+      ]
+    }
+  ],
+  "roles": [
+    {
+      "name": "dev-role",
+      "trust": ["arn:aws:iam::111122223333:user/alice"],
+      "policies": [
+        {"effect": "Allow", "actions": ["iam:AttachUserPolicy"], "resources": ["*"]},
+        {"effect": "Allow", "actions": ["ec2:Describe*"], "resources": ["*"]}
+      ]
+    },
+    {
+      "name": "lambda-admin-role",
+      "trust": ["lambda.amazonaws.com"],
+      "policies": [
+        {"effect": "Allow", "actions": ["*"], "resources": ["*"]}
+      ]
+    },
+    {
+      "name": "lambda-basic-role",
+      "trust": ["lambda.amazonaws.com"],
+      "policies": [
+        {"effect": "Allow", "actions": ["logs:*"], "resources": ["*"]}
+      ]
+    }
+  ]
+}
